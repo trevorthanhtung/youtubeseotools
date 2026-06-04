@@ -1254,48 +1254,70 @@ function exportPackToTXT(packId) {
     return;
   }
 
-        <p style="margin: 5px 0;"><strong>Chủ đề video:</strong> ${escapeHtml(pack.input.topic)}</p>
-        <p style="margin: 5px 0;"><strong>Từ khóa chính:</strong> ${escapeHtml(pack.input.primaryKeyword)}</p>
-      </div>
-      
-      <div style="margin-bottom: 25px;">
-        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #cccccc; padding-bottom: 8px; margin-bottom: 15px; color: #000000;">2. 10 TIÊU ĐỀ ĐỀ XUẤT (TITLE)</h2>
-        <ul style="padding-left: 20px; margin: 0;">
-          ${pack.result.titles.map(t => `<li style="margin-bottom: 8px; font-size: 15px;">${escapeHtml(t)}</li>`).join("")}
-        </ul>
-      </div>
-      
-      <div style="margin-bottom: 25px;">
-        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #cccccc; padding-bottom: 8px; margin-bottom: 15px; color: #000000;">3. MÔ TẢ CHUẨN SEO (DESCRIPTION)</h2>
-        <div style="padding: 15px; border: 1px solid #dddddd; border-radius: 4px; background-color: #fafafa; white-space: pre-wrap; font-size: 14px; line-height: 1.6;">${escapeHtml(pack.result.description)}</div>
-      </div>
-      
-      <div style="margin-bottom: 25px;">
-        <h2 style="font-size: 18px; font-weight: bold; border-bottom: 1px solid #cccccc; padding-bottom: 8px; margin-bottom: 15px; color: #000000;">4. THẺ TỪ KHÓA & HASHTAG (TAGS)</h2>
-        <p style="margin: 5px 0 10px 0;"><strong>Hashtag:</strong> <span style="color: #0056b3;">${pack.result.hashtags.join(" ")}</span></p>
-        <p style="margin: 5px 0;"><strong>Tags (Dấu phẩy):</strong></p>
-        <div style="padding: 12px; border: 1px solid #dddddd; background-color: #ffffff; font-size: 14px;">${pack.result.tags.join(", ")}</div>
-      </div>
-    </div>
-  `;
+  const lines = [];
+  const separator = "=".repeat(60);
+  const thin = "-".repeat(60);
 
-  const opt = {
-    margin:       0,
-    filename:     `youtube-seo-report-${slugify(pack.input.primaryKeyword)}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-  };
+  lines.push("BÁO CÁO TỐI ƯU SEO YOUTUBE");
+  lines.push("Tạo bởi Youtube SEO Tools · thực hiện bởi thanhtungg.");
+  lines.push(separator);
+  lines.push("");
 
-  showToast("Đang chuẩn bị file PDF... Quá trình này có thể mất vài giây.");
+  lines.push("1. THÔNG TIN CHUNG");
+  lines.push(thin);
+  lines.push("Chủ đề video : " + pack.input.topic);
+  lines.push("Từ khóa chính: " + pack.input.primaryKeyword);
+  if (pack.input.secondaryKeywords) {
+    lines.push("Từ khóa phụ  : " + pack.input.secondaryKeywords);
+  }
+  lines.push("");
 
-  setTimeout(() => {
-    html2pdf().set(opt).from(htmlContent).save().then(() => {
-      showToast("Đã tải xuống báo cáo PDF!");
-    }).catch((err) => {
-      showToast("Lỗi xuất PDF: " + err.message);
+  lines.push("2. 10 TIÊU ĐỀ ĐỀ XUẤT (TITLE)");
+  lines.push(thin);
+  pack.result.titles.forEach((t, i) => {
+    lines.push(String(i + 1).padStart(2, "0") + ". " + t);
+  });
+  lines.push("");
+
+  lines.push("3. MÔ TẢ CHUẨN SEO (DESCRIPTION)");
+  lines.push(thin);
+  lines.push(pack.result.description);
+  lines.push("");
+
+  lines.push("4. HASHTAG");
+  lines.push(thin);
+  lines.push(pack.result.hashtags.join(" "));
+  lines.push("");
+
+  lines.push("5. TAGS (dấu phẩy)");
+  lines.push(thin);
+  lines.push(pack.result.tags.join(", "));
+  lines.push("");
+
+  if (pack.result.checklist && pack.result.checklist.length) {
+    lines.push("6. CHECKLIST SEO");
+    lines.push(thin);
+    pack.result.checklist.forEach(item => {
+      lines.push("[ ] " + item);
     });
-  }, 150);
+    lines.push("");
+  }
+
+  lines.push(separator);
+  lines.push("Xuất lúc: " + new Date().toLocaleString("vi-VN"));
+
+  const content = lines.join("\n");
+  const blob = new Blob(["\uFEFF" + content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "youtube-seo-report-" + slugify(pack.input.primaryKeyword) + ".txt";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast("Đã tải xuống báo cáo TXT!");
 }
 
 async function copyToClipboard(text, label = "Nội dung") {
