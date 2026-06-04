@@ -1158,7 +1158,7 @@ function renderSavedSeoCard(pack) {
             <button class="dropdown-item" type="button" data-action="copy-pack-part" data-id="${pack.id}" data-part="pinned">Bình luận ghim</button>
           </div>
         </div>
-        <button class="saved-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất PDF</button>
+        <button class="saved-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất TXT</button>
         <button class="saved-action danger" type="button" data-action="show-confirm" data-confirm-title="Xóa bộ SEO này?" data-confirm-desc="Thao tác này không thể hoàn tác." data-confirm-action="delete-pack" data-id="${pack.id}">Xóa</button>
       </div>
     </article>
@@ -1247,22 +1247,13 @@ function renderKeywordLibraryEmpty(isFiltered = false) {
   `;
 }
 
-function exportPackToPDF(packId) {
+function exportPackToTXT(packId) {
   const pack = state.packs.find((item) => item.id === packId) || state.currentPack;
   if (!pack) {
     showToast("Không tìm thấy bộ SEO để xuất file.");
     return;
   }
 
-  const htmlContent = `
-    <div style="padding: 40px; font-family: Arial, Helvetica, sans-serif; color: #000000; background-color: #ffffff; line-height: 1.6;">
-      <div style="text-align: center; border-bottom: 3px solid #000000; padding-bottom: 20px; margin-bottom: 30px;">
-        <h1 style="font-size: 28px; font-weight: bold; color: #000000; margin: 0; text-transform: uppercase;">BÁO CÁO TỐI ƯU SEO YOUTUBE</h1>
-        <p style="font-size: 14px; color: #333333; margin-top: 8px;">Tạo bởi Youtube SEO Tools</p>
-      </div>
-      
-      <div style="margin-bottom: 25px; padding: 20px; background-color: #f9f9f9; border-left: 5px solid #000000;">
-        <h2 style="font-size: 18px; font-weight: bold; margin-top: 0; margin-bottom: 12px; color: #000000;">1. THÔNG TIN CHUNG</h2>
         <p style="margin: 5px 0;"><strong>Chủ đề video:</strong> ${escapeHtml(pack.input.topic)}</p>
         <p style="margin: 5px 0;"><strong>Từ khóa chính:</strong> ${escapeHtml(pack.input.primaryKeyword)}</p>
       </div>
@@ -1400,7 +1391,7 @@ function renderSeoResult(pack, includeSaveButton = false) {
 
       <div class="button-row">
         ${includeSaveButton ? '<button class="primary-action" type="button" data-action="save-current">Lưu bộ SEO</button>' : ""}
-        <button class="ghost-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất báo cáo PDF</button>
+        <button class="ghost-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất báo cáo TXT</button>
       </div>
     </div>
   `;
@@ -1477,7 +1468,7 @@ function renderPackListItem(pack, compact = false) {
             </div>
           </div>
           
-          <button class="ghost-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất PDF</button>
+          <button class="ghost-action" type="button" data-action="export-pdf" data-id="${pack.id}">Xuất TXT</button>
 
           <div class="dropdown">
             <button class="ghost-action" style="padding: 8px;" type="button" data-action="dropdown-toggle">⋯</button>
@@ -1771,7 +1762,7 @@ function handleViewClick(event) {
     renderActiveTab();
   }
   if (action === "save-current") savePack();
-  if (action === "export-pdf") exportPackToPDF(id);
+  if (action === "export-pdf") exportPackToTXT(id);
   if (action === "copy-text") copyToClipboard(copy, label);
   if (action === "view-pack") viewPack(id);
   if (action === "delete-pack") deletePack(id);
