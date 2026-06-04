@@ -1,0 +1,46 @@
+{
+  "name": "Youtube SEO Tools",
+  "short_name": "YT SEO Tools",
+  "id": "./",
+  "description": "Công cụ tạo bộ SEO YouTube, lưu dữ liệu trực tiếp trên trình duyệt.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0f0f0f",
+  "theme_color": "#ff0033",
+  "prefer_related_applications": false,
+  "categories": ["productivity", "utilities"],
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "icons/tool-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/tool-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tạo bộ SEO",
+      "short_name": "Tạo mới",
+      "description": "Mở nhanh màn hình tạo bộ SEO.",
+      "url": "./index.html#create",
+      "icons": [{ "src": "icons/tool-icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Bộ SEO đã lưu",
+      "short_name": "Đã lưu",
+      "description": "Xem lại các bộ SEO đã lưu.",
+      "url": "./index.html#saved",
+      "icons": [{ "src": "icons/tool-icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
