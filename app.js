@@ -86,7 +86,7 @@ function initApp() {
   migrateLegacyStorage();
   state.packs = getStoredData(STORAGE_KEYS.packs, []);
   state.keywordBank = getStoredData(STORAGE_KEYS.keywords, defaultKeywordBank);
-  const _k = "wHlPEslxh3Kp0Iwguz-sxYmz08naD9cL-VlA3MgQPzh3J6NR8bA.QA".split("").reverse().join("");
+  const _k = "wHlPEslxh3Kp0Iwgu-sxYmz08naD9cL-VlA3MgQPzh3J6NR8bA.QA".split("").reverse().join("");
   state.geminiApiKey = localStorage.getItem(STORAGE_KEYS.apiKey) || _k;
   state.isInstalled = isRunningStandalone();
   if (!localStorage.getItem(STORAGE_KEYS.keywords)) {
